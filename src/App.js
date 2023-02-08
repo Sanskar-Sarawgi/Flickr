@@ -6,13 +6,12 @@ import { Routes, Route } from "react-router-dom";
 
 function App() {
   const [search, searchSet] = useState("Nature");
-
   return (
     <div>
       <Navbar searchSet={searchSet} />
       <Routes>
         <Route path="/" element={<GalleryGrid search={search} />} />
-        <Route path="/image" element={<ImageFrame/>} />
+        <Route path="/image/:id" element={<ImageFrame/>} />
       </Routes>
     </div>
   );

@@ -1,9 +1,10 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 export default function Navbar(props) {
-const HandleSearch = (event) => {
+  const HandleSearch = (event) => {
     props.searchSet(event.target.value === "" ? "Nature" : event.target.value);
-} 
+  };
   return (
     <nav className="navbar navbar-expand-lg bg-body-tertiary">
       <div className="container-fluid">
@@ -22,6 +23,13 @@ const HandleSearch = (event) => {
           <span className="navbar-toggler-icon"></span>
         </button>
         <div className="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <Link class="nav-link active" aria-current="page" to="/">
+                Home
+              </Link>
+            </li>
+          </ul>
           <form className="d-flex" role="search">
             <input
               className="form-control me-2"

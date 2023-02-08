@@ -1,28 +1,40 @@
-import React, { useEffect } from "react";
 import { useLocation } from "react-router-dom";
+import { useEffect, useState } from "react";
 
 export default function ImageFrame() {
-  let url = "";
   const location = useLocation();
-  const getImageUrl = async (id) => {
-    const url = `https://www.flickr.com/services/rest/?method=flickr.photos.getSizes&api_key=8224588fe10a6badd472a4c6304f14f9&photo_id=${id}&format=json&nojsoncallback=1`;
-    let res = await fetch(url, {
-      method: "GET",
-      headers: {
-        Accept: "application/json",
-      },
-    });
-    let Data = await res.json();
-    return Data.sizes.size[3].source;
-  };
-  useEffect(() => {
-    
-    //console.log(location.state.id);
-    url = getImageUrl(location.state.id);
-  }, []);
+  const [photo, photoSet] = useState(location.state.Image);
+
+  const ChangeTitle = () => {
+    const textbox = document.getElementById("title").value;
+    let tempValue = location.state.Image;
+    tempValue.title = textbox;
+    localStorage.setItem(tempValue.id, JSON.stringify(tempValue));
+    photoSet(tempValue);
+  }
+
+  const ChangeHandler = (event) => {
+      let value = { ...photo};
+      value.title = event.target.value;
+      photoSet(value);
+  }
+  
+  useEffect(()=> {
+    let value = JSON.parse(localStorage.getItem(photo.id));
+    if(value !== null){
+       photoSet(value);
+    }
+  },[])
   return (
-    <div>
-      <img src={url} className="img-thumbnail" alt="" />
-    </div>
+      <div className="d-flex flex-column mb-3">
+        <h2 style={{ textAlign: "center" }}>{photo.title}</h2>
+        <img src={location.state.url} className="img-thumbnail" alt="" />
+        <div>
+          <h4>Change it what you like to call this picture</h4>
+          <input id = "title" type='text' value={photo.title} onChange={ChangeHandler}/>
+          <button className="btn btn-warning" onClick={ChangeTitle}>Change Title</button>
+        </div>
+        
+      </div>
   );
 }
