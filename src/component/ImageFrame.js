@@ -24,6 +24,7 @@ export default function ImageFrame() {
     if (value !== null) {
       photoSet(value);
     }
+    // eslint-disable-next-line
   }, []);
   return (
     <div className="d-flex flex-column mb-3">

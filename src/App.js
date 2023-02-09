@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState} from "react";
 import GalleryGrid from "./component/GalleryGrid";
 import Navbar from "./component/Navbar";
 import ImageFrame from "./component/ImageFrame";
 import { Routes, Route } from "react-router-dom";
 
 function App() {
-  const [search, searchSet] = useState("Nature");
+  const [search, searchSet] = useState("car");
   const [page, pageset] = useState(1);
   const api = process.env.REACT_APP_APIKEY_FLICKR;
   return (
