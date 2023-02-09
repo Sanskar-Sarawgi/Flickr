@@ -2,11 +2,15 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 
 export default function GalleryGrid(props) {
-  const [Images, ImagesSet] = useState([]);
-  const [Loding, LodingSet] = useState(true);
-  const [pageTotal, pageTotalset] = useState(1);
-  const [Delete, setDelete] = useState(false);
-  const [filter,filterSet] = useState(localStorage.getItem('delete') || localStorage.setItem("delete", '')  ? localStorage.getItem('delete').split(",") : []);
+  const [Images, SetImages] = useState([]);
+  const [Loding, SetLoding] = useState(true);
+  const [pageTotal, SetPageTotal] = useState(1);
+  const [Delete, SetDelete] = useState(false);
+  const [filter, Setfilter] = useState(
+    localStorage.getItem("delete") || localStorage.setItem("delete", "")
+      ? localStorage.getItem("delete").split(",")
+      : []
+  );
   // see this later
 
   // const getImageUrl = async (id) => {
@@ -24,7 +28,7 @@ export default function GalleryGrid(props) {
 
   const fetchImage = async () => {
     const url = `https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=${props.api}&tags=${props.search}&per_page=20&page=${props.page}&format=json&nojsoncallback=1`;
-    LodingSet(true);
+    SetLoding(true);
     let res = await fetch(url, {
       method: "GET",
       headers: {
@@ -32,22 +36,22 @@ export default function GalleryGrid(props) {
       },
     });
     let Data = await res.json();
-    pageTotalset(Data.photos.pages);
+    SetPageTotal(Data.photos.pages);
     Data = Data.photos.photo;
 
     // Data.map((element, i) =>
     //   getImageUrl(element.id).then((e) => {
     //     Data[i].url = e
     //     console.log(Data);
-    //     ImagesSet(Data);
-    //     // ImagesSet((prevState) => {
+    //     SetImages(Data);
+    //     // SetImages((prevState) => {
     //     //   console.log(prevState);
     //     //   prevState[i].url = e;
     //     // })
     //   })
     // );
-    ImagesSet(Data);
-    LodingSet(false);
+    SetImages(Data);
+    SetLoding(false);
   };
 
   const HandlePrev = () => {
@@ -62,37 +66,44 @@ export default function GalleryGrid(props) {
 
   const DragStartHandler = (e) => {
     e.dataTransfer.setData("id", e.target.getAttribute("data-id"));
-    setDelete(true);
-  }
+    SetDelete(true);
+  };
 
-  const DragOverHandler = (e) =>{
+  const DragOverHandler = (e) => {
     e.preventDefault();
-  }
+  };
 
   const DragStopHandler = () => {
-    setDelete(false);
-  }
+    SetDelete(false);
+  };
 
   const DropHandler = (e) => {
     e.preventDefault();
     let data = filter;
     data.push(e.dataTransfer.getData("id"));
-    filterSet(data)
+    Setfilter(data);
     localStorage.setItem("delete", data.toString());
-    setDelete(false);
-  }
+    SetDelete(false);
+  };
 
   useEffect(() => {
     // console.log(filter);
     fetchImage();
+    // eslint-disable-next-line
   }, [props.search]);
 
   return (
     <>
       <div className="vh-100 vw-100 container text-center justify-content-center my-3">
         {Delete && (
-          <div  type="button" class="btn btn-outline-danger w-100" onDrop={DropHandler} onDragOver={DragOverHandler} draggable="true">
-            delete
+          <div
+            type="button"
+            class="btn btn-outline-danger w-100"
+            onDrop={DropHandler}
+            onDragOver={DragOverHandler}
+            draggable="true"
+          >
+            Block Image
           </div>
         )}
         {Loding ? (
@@ -104,38 +115,44 @@ export default function GalleryGrid(props) {
         ) : (
           <div className="row row-cols-5">
             {Images.map((Image, i) => {
-              if(filter.indexOf(Image.id) != -1) return ;
+              if (filter.indexOf(Image.id) !== -1)
+                return <div key={Image.id} style={{ display: "none" }}></div>;
               else
-              return (
-                <div className="col" key={Image.id}  onDragStart={DragStartHandler} onDragEnd={DragStopHandler}>
-                  <Link
-                    to={`/image/${Image.id}`}
-                    state={{
-                      url: `https://live.staticflickr.com/${Image.server}/${Image.id}_${Image.secret}_b.jpg`,
-                      Image: Image,
-                    }}
+                return (
+                  <div
+                    className="col"
+                    key={Image.id}
+                    onDragStart={DragStartHandler}
+                    onDragEnd={DragStopHandler}
                   >
-                    <img
-                      src={`https://live.staticflickr.com/${Image.server}/${Image.id}_${Image.secret}_q.jpg`}
-                      className="img-thumbnail"
-                      alt=""
-                      data-id={Image.id}
-                    />
-                  </Link>
-                </div>
-              );
+                    <Link
+                      to={`/image/${Image.id}`}
+                      state={{
+                        url: `https://live.staticflickr.com/${Image.server}/${Image.id}_${Image.secret}_b.jpg`,
+                        Image: Image,
+                      }}
+                    >
+                      <img
+                        src={`https://live.staticflickr.com/${Image.server}/${Image.id}_${Image.secret}_q.jpg`}
+                        className="img-thumbnail"
+                        alt=""
+                        data-id={Image.id}
+                      />
+                    </Link>
+                  </div>
+                );
             })}
           </div>
         )}
         <nav aria-label="Page navigation example">
           <ul className="pagination justify-content-center m-3">
-            <li className={`page-item ${props.page == 1 ? "disabled" : ""}`}>
+            <li className={`page-item ${props.page === 1 ? "disabled" : ""}`}>
               <button className="page-link" onClick={HandlePrev}>
                 Previous
               </button>
             </li>
             <li className="page-item disabled">
-              <a className="page-link">
+              <a className="page-link" href="/">
                 {props.page}-{pageTotal}
               </a>
             </li>

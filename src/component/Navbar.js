@@ -10,7 +10,9 @@ export default function Navbar(props) {
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
       <div className="container-fluid">
         <Link className="navbar-brand" to="/">
-          <span class="badge text-bg-warning fs-5  font-weight-bold ">G-Pic</span>
+          <span class="badge text-bg-warning fs-5  font-weight-bold ">
+            G-Pic
+          </span>
         </Link>
         <button
           className="navbar-toggler"
@@ -24,10 +26,20 @@ export default function Navbar(props) {
           <span className="navbar-toggler-icon"></span>
         </button>
         <div className="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <ul class="navbar-nav me-auto mb-3 mb-lg-1">
             <li class="nav-item ">
               <Link class="nav-link active" aria-current="page" to="/">
-                Home
+                <u>Home</u>
+              </Link>
+            </li>
+            <li class="nav-item ">
+              <Link class="nav-link active" aria-current="page" to="/delete">
+                <u>Blocked Image</u>
+              </Link>
+            </li>
+            <li class="nav-item ">
+              <Link class="nav-link active" aria-current="page" to="/collection">
+                <u>Collection</u>
               </Link>
             </li>
           </ul>

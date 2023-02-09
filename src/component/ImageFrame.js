@@ -61,7 +61,11 @@ export default function ImageFrame() {
                 />
               </div>
               <div class="modal-footer">
-                <button className="btn btn-warning" onClick={ChangeTitle} data-dismiss="modal">
+                <button
+                  className="btn btn-warning"
+                  onClick={ChangeTitle}
+                  data-dismiss="modal"
+                >
                   Add To Collection
                 </button>
               </div>
@@ -70,12 +74,12 @@ export default function ImageFrame() {
         </div>
       </div>
       <button
-          type="button"
-          class="btn btn-outline-success rounded-0"
-          data-toggle="modal"
-          data-target="#exampleModal"
-        >
-          <h3>{photo.title}</h3>
+        type="button"
+        class="btn btn-outline-success rounded-0"
+        data-toggle="modal"
+        data-target="#exampleModal"
+      >
+        <h3>{photo.title}</h3>
       </button>
       <img src={location.state.url} className="img-thumbnail" alt="" />
     </div>
