@@ -8,10 +8,16 @@ export default function Collection() {
 
   useEffect(() => {
     SetLoding(true);
+    let data = [];
     for (var i = 0, len = localStorage.length; i < len; ++i) {
       if (localStorage.key(i) !== "delete")
-        SetImages(previousImage => { console.log(i); return [...previousImage, JSON.parse(localStorage.getItem(localStorage.key(i)))];});
+      {
+        data.push(JSON.parse(localStorage.getItem(localStorage.key(i))));
+        // SetImages(previousImage => { console.log(i); return [...previousImage, JSON.parse(localStorage.getItem(localStorage.key(i)))];});
+      }
+        
     }
+    SetImages(data);
     SetLoding(false);
   },[]);
 
