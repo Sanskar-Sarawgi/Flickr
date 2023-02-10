@@ -26,7 +26,7 @@ export default function Delete() {
       count++;
       if(count === filter.length) SetLoding(false);
     });
-    
+    if(count === filter.length) SetLoding(false);
   };
 
   const OnAddImage = (e) => {
@@ -42,6 +42,7 @@ export default function Delete() {
 
   useEffect(() => {
     FetchData();
+    // eslint-disable-next-line
   }, []);
 
   return (
@@ -75,3 +76,4 @@ export default function Delete() {
     </div>
   );
 }
+
